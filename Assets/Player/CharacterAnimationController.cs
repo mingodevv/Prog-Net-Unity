@@ -8,13 +8,13 @@ public class CharacterAnimationController : MonoBehaviour
     [SerializeField] 
     private Animator animPlayer;
 
-    private void Update()
+    public void setWalking(bool cond)
     {
-        animPlayer.Play("Walking");
+        animPlayer.SetBool("isWalking", cond);
     }
-
-    public void PlayAnimationWalk()
+    
+    public void setRolling(bool cond)
     {
-        
+        animPlayer.SetBool("isRolling", cond);
     }
 }

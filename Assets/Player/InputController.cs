@@ -1,9 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CharacterMovementController))]
 public class InputController : MonoBehaviour
 {
+    [SerializeField] 
+    private CharacterAnimationController characterAnimationController; 
+    
     private CharacterMovementController _movementController;
     private PlayerInput _playerInput;
 
@@ -68,6 +72,14 @@ public class InputController : MonoBehaviour
     {
         Vector2 moveInput = _moveAction.ReadValue<Vector2>();
         _movementController.SetMoveDirection(moveInput);
+        if (moveInput.x != 0 || moveInput.y != 0)
+        {
+            characterAnimationController.setWalking(true);
+        }
+        else
+        {
+            characterAnimationController.setWalking(false);
+        }
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -88,6 +100,7 @@ public class InputController : MonoBehaviour
     private void OnRoll(InputAction.CallbackContext context)
     {
         _movementController.Roll();
+        characterAnimationController.setRolling(true);
     }
 
     private void OnSprint(InputAction.CallbackContext context)
