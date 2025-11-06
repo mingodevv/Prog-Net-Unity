@@ -13,8 +13,8 @@ public class CharacterAnimationController : MonoBehaviour
         animPlayer.SetBool("isWalking", cond);
     }
     
-    public void setRolling(bool cond)
+    public void setRolling()
     {
-        animPlayer.SetBool("isRolling", cond);
+        animPlayer.SetTrigger("isRolling");
     }
 }

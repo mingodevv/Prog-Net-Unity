@@ -100,7 +100,7 @@ public class InputController : MonoBehaviour
     private void OnRoll(InputAction.CallbackContext context)
     {
         _movementController.Roll();
-        characterAnimationController.setRolling(true);
+        characterAnimationController.setRolling();
     }
 
     private void OnSprint(InputAction.CallbackContext context)
