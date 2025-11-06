@@ -1,19 +1,33 @@
 using UnityEngine;
 
-public class CharacterSkillManager : MonoBehaviour
+public class CharacterSkillController : MonoBehaviour
 {
-    public void Skill1()
+    public static CharacterSkillController Instance;
+
+    private void Awake()
     {
-        Debug.Log("Skill1");
+        if (Instance != null && Instance != this)
+            Destroy(gameObject);
+        else
+            Instance = this;
     }
-    
-    public void Skill2()
+
+    public void ActivateSkill(string skillName)
     {
-        Debug.Log("Skill2");
-    }
-    
-    public void Skill3()
-    {
-        Debug.Log("Skill3");
+        switch (skillName)
+        {
+            case "Skill1":
+                Debug.Log("Skill1 activated");
+                break;
+            case "Skill2":
+                Debug.Log("Skill2 activated");
+                break;
+            case "Skill3":
+                Debug.Log("Skill3 activated");
+                break;
+            default:
+                Debug.LogWarning("Skill inconnue : " + skillName);
+                break;
+        }
     }
 }
