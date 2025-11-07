@@ -1,19 +1,15 @@
-using System;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CharacterAnimationController : MonoBehaviour
 {
-    [SerializeField] 
-    private Animator animPlayer;
-
-    public void setWalking(bool cond)
+    [SerializeField] private Animator animPlayer;
+    
+    public void SetSpeed(float speed)
     {
-        animPlayer.SetBool("isWalking", cond);
+        animPlayer.SetFloat("Speed", speed);
     }
     
-    public void setRolling()
+    public void SetRolling()
     {
         animPlayer.SetTrigger("isRolling");
     }
