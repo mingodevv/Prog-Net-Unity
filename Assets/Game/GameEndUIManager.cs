@@ -11,6 +11,7 @@ public class GameEndUIManager : MonoBehaviour
     [SerializeField] private GameObject panelEndGame;
     [SerializeField] private TextMeshProUGUI textVictoryDefeat;
     [SerializeField] private Button restartButton;
+    [SerializeField] private TextMeshProUGUI textTimer;
 
     private void Awake()
     {
@@ -55,4 +56,11 @@ public class GameEndUIManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    
+    public void UpdateTimer(float timeRemaining)
+    {
+        if (textTimer != null)
+            textTimer.text = $"{Mathf.CeilToInt(timeRemaining)}s";
+    }
+    
 }
