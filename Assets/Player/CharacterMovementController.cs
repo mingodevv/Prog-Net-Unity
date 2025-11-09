@@ -15,14 +15,12 @@ public class CharacterMovementController : MonoBehaviour
     [Header("Crouch Settings")]
     public float crouchHeight = 1f;
     public float crouchModelOffset = -0.5f;
-    public float cameraCrouchOffset = -0.5f;
     public float crouchTransitionSpeed = 5f;
 
-    [Header("Model Reference")]
+    [Header("References")]
     [SerializeField] private Transform model;
-
-    [Header("Camera Reference")]
     [SerializeField] private Transform camTransform;
+    [SerializeField] private CharacterAnimationController animController;
 
     private Rigidbody _rb;
     private CapsuleCollider _collider;
@@ -34,7 +32,6 @@ public class CharacterMovementController : MonoBehaviour
 
     private float _originalHeight;
     private Vector3 _originalModelPosition;
- 
 
     void Awake()
     {
@@ -44,9 +41,9 @@ public class CharacterMovementController : MonoBehaviour
 
         if (model != null)
             _originalModelPosition = model.localPosition;
-        
-        else
-            Debug.LogWarning("⚠️ Caméra non assignée dans Inspector ! Déplacement relatif caméra désactivé.");
+
+        if (animController == null)
+            animController = GetComponentInChildren<CharacterAnimationController>();
     }
 
     void Update()
@@ -58,19 +55,29 @@ public class CharacterMovementController : MonoBehaviour
             currentSpeed *= sprintMultiplier;
         else if (_isCrouching)
             currentSpeed *= crouchSpeedMultiplier;
-
-
+        
         Vector3 move = _moveDirection * currentSpeed;
         Vector3 velocity = _rb.linearVelocity;
         velocity.x = move.x;
         velocity.z = move.z;
         _rb.linearVelocity = velocity;
-
-
+        
         if (_moveDirection.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(_moveDirection);
             _rb.rotation = Quaternion.Slerp(_rb.rotation, targetRotation, 10f * Time.deltaTime);
+        }
+        
+        float moveAmount = _moveDirection.magnitude;
+        if (animController != null)
+        {
+            float animSpeed ;
+            if (moveAmount > 0.1f)
+                animSpeed = _isSprinting ? 1f : 0.5f;
+            else
+                animSpeed = 0f;
+
+            animController.SetSpeed(animSpeed);
         }
 
         UpdateCrouchVisuals();
@@ -84,10 +91,8 @@ public class CharacterMovementController : MonoBehaviour
             if (_isCrouching) targetModelPos.y += crouchModelOffset;
             model.localPosition = Vector3.Lerp(model.localPosition, targetModelPos, Time.deltaTime * crouchTransitionSpeed);
         }
-
     }
 
- 
     public void SetMoveDirection(Vector2 input)
     {
         if (camTransform == null)
@@ -98,13 +103,8 @@ public class CharacterMovementController : MonoBehaviour
 
         Vector3 forward = camTransform.forward;
         Vector3 right = camTransform.right;
-
         forward.y = 0f;
         right.y = 0f;
-
-        forward.Normalize();
-        right.Normalize();
-
         _moveDirection = (right * input.x + forward * input.y).normalized;
     }
 
@@ -135,6 +135,10 @@ public class CharacterMovementController : MonoBehaviour
     private IEnumerator RollCoroutine()
     {
         _isRolling = true;
+
+        if (animController != null)
+            animController.SetRolling();
+
         _rb.AddForce(_moveDirection * rollForce, ForceMode.Impulse);
         yield return new WaitForSeconds(0.6f);
         _isRolling = false;

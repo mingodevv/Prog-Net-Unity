@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CharacterMovementController))]
 public class InputController : MonoBehaviour
@@ -16,8 +15,6 @@ public class InputController : MonoBehaviour
     private InputAction _crouchAction;
     private InputAction _rollAction;
     private InputAction _sprintAction;
-
-   
     private InputAction _skill1Action;
     private InputAction _skill2Action;
     private InputAction _skill3Action;
@@ -32,8 +29,6 @@ public class InputController : MonoBehaviour
         _crouchAction = _playerInput.actions["Crouch"];
         _rollAction = _playerInput.actions["Roll"];
         _sprintAction = _playerInput.actions["Sprint"]; 
-
-       
         _skill1Action = _playerInput.actions["Skill1"];
         _skill2Action = _playerInput.actions["Skill2"];
         _skill3Action = _playerInput.actions["Skill3"];
@@ -47,7 +42,6 @@ public class InputController : MonoBehaviour
         _rollAction.performed += OnRoll;
         _sprintAction.performed += OnSprint;
         _sprintAction.canceled += OnSprintCanceled;
-        
         
         _skill1Action.performed += OnSkill1;
         _skill2Action.performed += OnSkill2;
@@ -72,13 +66,11 @@ public class InputController : MonoBehaviour
     {
         Vector2 moveInput = _moveAction.ReadValue<Vector2>();
         _movementController.SetMoveDirection(moveInput);
-        if (moveInput.x != 0 || moveInput.y != 0)
+        
+        if (characterAnimationController != null)
         {
-            characterAnimationController.setWalking(true);
-        }
-        else
-        {
-            characterAnimationController.setWalking(false);
+            float currentSpeed = new Vector3(moveInput.x, 0, moveInput.y).magnitude;
+            characterAnimationController.SetSpeed(currentSpeed);
         }
     }
 
@@ -100,7 +92,7 @@ public class InputController : MonoBehaviour
     private void OnRoll(InputAction.CallbackContext context)
     {
         _movementController.Roll();
-        characterAnimationController.setRolling();
+        characterAnimationController?.SetRolling();
     }
 
     private void OnSprint(InputAction.CallbackContext context)
@@ -112,22 +104,19 @@ public class InputController : MonoBehaviour
     {
         _movementController.SetSprinting(false);
     }
-    
+
     private void OnSkill1(InputAction.CallbackContext context)
     {
-        // Ici on appelle le CharacterSkillController
-        CharacterSkillController.Instance.ActivateSkill("Skill1");
+        CharacterSkillController.Instance?.ActivateSkill("Skill1");
     }
 
     private void OnSkill2(InputAction.CallbackContext context)
     {
-        CharacterSkillController.Instance.ActivateSkill("Skill2");
+        CharacterSkillController.Instance?.ActivateSkill("Skill2");
     }
 
     private void OnSkill3(InputAction.CallbackContext context)
     {
-        CharacterSkillController.Instance.ActivateSkill("Skill3");
+        CharacterSkillController.Instance?.ActivateSkill("Skill3");
     }
-
 }
-
