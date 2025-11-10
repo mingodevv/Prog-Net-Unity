@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Collectible : MonoBehaviour
+public class    Collectible : MonoBehaviour
 {
     [Header("Paramètres de l'Orbe")]
     public string collectibleName = "Orbe";
