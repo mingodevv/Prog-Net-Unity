@@ -2,23 +2,20 @@ using UnityEngine;
 using System.Collections;
 using Unity.Netcode;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CapsuleCollider))]
 public class CharacterMovementController : NetworkBehaviour
 {
-    //TODO: Enlever public sur ces variables ci-dessous ( ne respecte pas les besoin
     
     [Header("Movement Settings")]
-    public float moveSpeed = 3f;
-    public float sprintMultiplier = 1.5f;
-    public float jumpForce = 3f;
-    public float crouchSpeedMultiplier = 0.75f;
-    public float rollForce = 4.5f;
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float sprintMultiplier = 1.5f;
+    [SerializeField] private float jumpForce = 3f;
+    [SerializeField] private float crouchSpeedMultiplier = 0.75f;
+    [SerializeField] private float rollForce = 4.5f;
 
     [Header("Crouch Settings")]
-    public float crouchHeight = 1f;
-    public float crouchModelOffset = -0.5f;
-    public float crouchTransitionSpeed = 5f;
+    [SerializeField] private float crouchHeight = 1f;
+    [SerializeField] private float crouchModelOffset = -0.5f;
+    [SerializeField] private float crouchTransitionSpeed = 5f;
 
     [Header("References")]
     [SerializeField] private Transform model;
