@@ -1,12 +1,34 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterMovementController))]
 public class InputController : MonoBehaviour
 {
+    
+    #region Singleton
+    public static InputController Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        Instance = this;
+    }
+    #endregion
+    
+    public void SetCharacterMovementController(CharacterMovementController aCharacterMovement)
+    {
+        _movementController = aCharacterMovement;
+    }
+    
     private CharacterMovementController _movementController;
     private PlayerInput _playerInput;
 
+    private InputSystem_Actions m_actions;
+    
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _crouchAction;
@@ -16,23 +38,26 @@ public class InputController : MonoBehaviour
     private InputAction _skill2Action;
     private InputAction _skill3Action;
 
-    void Awake()
+    void Start()
     {
-        _movementController = GetComponent<CharacterMovementController>();
+        m_actions = new InputSystem_Actions();
+        m_actions.Enable();
+        
         _playerInput = GetComponent<PlayerInput>();
 
-        _moveAction = _playerInput.actions["Move"];
-        _jumpAction = _playerInput.actions["Jump"];
-        _crouchAction = _playerInput.actions["Crouch"];
-        _rollAction = _playerInput.actions["Roll"];
-        _sprintAction = _playerInput.actions["Sprint"]; 
-        _skill1Action = _playerInput.actions["Skill1"];
-        _skill2Action = _playerInput.actions["Skill2"];
-        _skill3Action = _playerInput.actions["Skill3"];
+        // _moveAction = _playerInput.actions["Move"];
+        // _jumpAction = _playerInput.actions["Jump"];
+        // _crouchAction = _playerInput.actions["Crouch"];
+        // _rollAction = _playerInput.actions["Roll"];
+        // _sprintAction = _playerInput.actions["Sprint"]; 
+        // _skill1Action = _playerInput.actions["Skill1"];
+        // _skill2Action = _playerInput.actions["Skill2"];
+        // _skill3Action = _playerInput.actions["Skill3"];
     }
 
     void OnEnable()
     {
+		return; 
         _jumpAction.performed += OnJump;
         _crouchAction.performed += OnCrouch;
         _crouchAction.canceled += OnCrouchCanceled;
@@ -47,6 +72,7 @@ public class InputController : MonoBehaviour
 
     void OnDisable()
     {
+		return; 
         _jumpAction.performed -= OnJump;
         _crouchAction.performed -= OnCrouch;
         _crouchAction.canceled -= OnCrouchCanceled;
@@ -61,7 +87,10 @@ public class InputController : MonoBehaviour
 
     void Update()
     {
-        Vector2 moveInput = _moveAction.ReadValue<Vector2>();
+        if (!_movementController)
+            return;
+        
+        Vector2 moveInput = m_actions.Player.Move.ReadValue<Vector2>();
         _movementController.SetMoveDirection(moveInput);
     }
 

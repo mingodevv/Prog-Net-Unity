@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Netcode;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
-public class CharacterMovementController : MonoBehaviour
+public class CharacterMovementController : NetworkBehaviour
 {
+    //TODO: Enlever public sur ces variables ci-dessous ( ne respecte pas les besoin
+    
     [Header("Movement Settings")]
     public float moveSpeed = 3f;
     public float sprintMultiplier = 1.5f;
@@ -33,6 +36,16 @@ public class CharacterMovementController : MonoBehaviour
     private float _originalHeight;
     private Vector3 _originalModelPosition;
 
+    protected override void OnNetworkPostSpawn()
+    {
+        base.OnNetworkPostSpawn();
+
+        if (IsOwner)
+        {
+            InputController.Instance.SetCharacterMovementController(this);
+        }
+    }
+    
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();

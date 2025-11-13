@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 25ac5e4e3158e4b4091c2b9cd901ad28
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_championCharacterPrefab: {fileID: 4793451873984574072, guid: 03c395b061ef73a4e9b17efcaed9c9eb, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
