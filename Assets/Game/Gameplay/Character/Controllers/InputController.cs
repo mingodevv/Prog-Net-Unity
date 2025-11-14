@@ -1,9 +1,9 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
-    
     #region Singleton
     public static InputController Instance { get; private set; }
 
@@ -19,13 +19,16 @@ public class InputController : MonoBehaviour
     }
     #endregion
     
-    public void SetCharacterMovementController(CharacterMovementController aCharacterMovement)
+    public void SetCharacter(Character aCharacter)
     {
-        _movementController = aCharacterMovement;
+        _character = aCharacter;
+
+        _camera.Target.TrackingTarget = aCharacter.transform; 
     }
     
-    private CharacterMovementController _movementController;
-    private PlayerInput _playerInput;
+    [SerializeField] private CinemachineCamera _camera; 
+    
+    private Character _character;
 
     private InputSystem_Actions m_actions;
     
@@ -42,8 +45,6 @@ public class InputController : MonoBehaviour
     {
         m_actions = new InputSystem_Actions();
         m_actions.Enable();
-        
-        _playerInput = GetComponent<PlayerInput>();
 
         // _moveAction = _playerInput.actions["Move"];
         // _jumpAction = _playerInput.actions["Jump"];
@@ -59,8 +60,6 @@ public class InputController : MonoBehaviour
     {
 		return; 
         _jumpAction.performed += OnJump;
-        _crouchAction.performed += OnCrouch;
-        _crouchAction.canceled += OnCrouchCanceled;
         _rollAction.performed += OnRoll;
         _sprintAction.performed += OnSprint;
         _sprintAction.canceled += OnSprintCanceled;
@@ -74,8 +73,6 @@ public class InputController : MonoBehaviour
     {
 		return; 
         _jumpAction.performed -= OnJump;
-        _crouchAction.performed -= OnCrouch;
-        _crouchAction.canceled -= OnCrouchCanceled;
         _rollAction.performed -= OnRoll;
         _sprintAction.performed -= OnSprint;
         _sprintAction.canceled -= OnSprintCanceled;
@@ -87,55 +84,45 @@ public class InputController : MonoBehaviour
 
     void Update()
     {
-        if (!_movementController)
+        if (!_character)
             return;
         
         Vector2 moveInput = m_actions.Player.Move.ReadValue<Vector2>();
-        _movementController.SetMoveDirection(moveInput);
+        _character.MovementController.SetMoveDirection(moveInput);
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        _movementController.Jump();
-    }
-
-    private void OnCrouch(InputAction.CallbackContext context)
-    {
-        _movementController.Crouch(true);
-    }
-
-    private void OnCrouchCanceled(InputAction.CallbackContext context)
-    {
-        _movementController.Crouch(false);
+        _character.MovementController.Jump();
     }
 
     private void OnRoll(InputAction.CallbackContext context)
     {
-        _movementController.Roll();
+        _character.MovementController.Roll();
     }
 
     private void OnSprint(InputAction.CallbackContext context)
     {
-        _movementController.SetSprinting(true);
+        _character.MovementController.SetSprinting(true);
     }
 
     private void OnSprintCanceled(InputAction.CallbackContext context)
     {
-        _movementController.SetSprinting(false);
+        _character.MovementController.SetSprinting(false);
     }
 
     private void OnSkill1(InputAction.CallbackContext context)
     {
-        CharacterSkillController.Instance?.ActivateSkill("Skill1");
+        // CharacterSkillController.Instance?.ActivateSkill("Skill1");
     }
 
     private void OnSkill2(InputAction.CallbackContext context)
     {
-        CharacterSkillController.Instance?.ActivateSkill("Skill2");
+        // CharacterSkillController.Instance?.ActivateSkill("Skill2");
     }
 
     private void OnSkill3(InputAction.CallbackContext context)
     {
-        CharacterSkillController.Instance?.ActivateSkill("Skill3");
+        // CharacterSkillController.Instance?.ActivateSkill("Skill3");
     }
 }

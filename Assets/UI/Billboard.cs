@@ -19,15 +19,18 @@ public class Billboard : MonoBehaviour {
     }
 
     // Use Late update so everything should have finished moving.
-    void LateUpdate() {
+    void LateUpdate()
+    {
+        if (!Camera.current)
+            return;
         // There are two ways people billboard things.
         //TODO: Remove Camera.allCameras[0] && make sure that the other player
         switch (billboardType) {
             case BillboardType.LookAtCamera:
-                transform.LookAt(Camera.allCameras[0].transform.position, Vector3.up);
+                transform.LookAt(Camera.current.transform.position, Vector3.up);
                 break;
             case BillboardType.CameraForward:
-                transform.forward = Camera.allCameras[0].transform.forward;
+                transform.forward = Camera.current.transform.forward;
                 break;
             default:
                 break;

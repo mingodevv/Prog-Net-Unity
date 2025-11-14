@@ -2,16 +2,6 @@ using UnityEngine;
 
 public class CharacterSkillController : MonoBehaviour
 {
-    public static CharacterSkillController Instance;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-            Destroy(gameObject);
-        else
-            Instance = this;
-    }
-
     public void ActivateSkill(string skillName)
     {
         switch (skillName)

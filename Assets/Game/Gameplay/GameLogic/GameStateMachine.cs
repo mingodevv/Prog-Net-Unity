@@ -7,7 +7,7 @@ namespace Game.Gameplay.GameLogic
     public class GameStateMachine : StateManager<GameState.GameState>
     {
         // J'initialise ici pour passer la référence des liste de joueurs entre états. 
-        public List<Player> players; 
+        public List<Character> players; 
         
         void Awake()
         {

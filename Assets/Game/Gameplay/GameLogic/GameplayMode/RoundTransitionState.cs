@@ -5,7 +5,7 @@ namespace Game.Gameplay.GameLogic
 {
     public class RoundTransitionState : BaseState<GameState.GameState>
     {
-        private List<Player> _players; 
+        private List<Character> _players; 
         public RoundTransitionState() : base(GameState.GameState.RoundTransition)
         {
         }

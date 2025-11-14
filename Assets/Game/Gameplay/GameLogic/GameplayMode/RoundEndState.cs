@@ -3,10 +3,10 @@ using Game.GameState;
 
 namespace Game.Gameplay.GameLogic
 {
-    public class RoundStartState : BaseState<GameState.GameState>
+    public class RoundEndState : BaseState<GameState.GameState>
     {
-        private List<Player> _players; 
-        public RoundStartState() : base(GameState.GameState.RoundStart)
+        private List<Character> _players; 
+        public RoundEndState() : base(GameState.GameState.RoundEnd)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Game.Gameplay.GameLogic
 
         public override GameState.GameState GetNextState()
         {
-            return GameState.GameState.RoundStart;
+            return GameState.GameState.RoundEnd;
             // Penser à mettre un next state ici si les conditions pour aller au prochain state sont réunie
         }
 
