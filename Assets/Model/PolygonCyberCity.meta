@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Game.meta
+guid: 679c5872f8eff794487a2c91df448565
+========
 guid: 9c03957bf9d96b9458338575cc3edf7c
+>>>>>>>> 2c93f7272cffe441d369b986e6f5bd7e7494e105:Assets/Model/PolygonCyberCity.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
