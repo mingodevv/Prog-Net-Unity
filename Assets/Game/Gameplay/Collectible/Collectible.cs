@@ -27,9 +27,9 @@ public abstract class Collectible : MonoBehaviour
     {
         if (other.CompareTag("Player") && timerCanGrabOrb <= 0f) ; 
         {
-            OnCollect(other.gameObject.GetComponent<Player>());
+            OnCollect(other.gameObject.GetComponent<Character>());
         }
     }
     
-    public abstract void OnCollect(Player a_p);
+    public abstract void OnCollect(Character a_p);
 }

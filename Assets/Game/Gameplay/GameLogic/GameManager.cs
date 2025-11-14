@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         if (_gameEnded) return;
 
         // Timer
-        _timeRemaining -= Time.deltaTime;
+        // _timeRemaining -= Time.deltaTime;
 
         if (GameEndUIManager.Instance != null)
             GameEndUIManager.Instance.UpdateTimer(_timeRemaining);
