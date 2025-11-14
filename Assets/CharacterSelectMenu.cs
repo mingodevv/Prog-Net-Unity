@@ -2,21 +2,32 @@ using UnityEngine;
 
 public class CharacterSelectMenu : MonoBehaviour
 {
-    public GameObject panel;
+    [Header("Panels")]
+    public GameObject mainMenuPanel;
+    public GameObject characterSelectPanel;
+
+    void Start()
+    {
+        mainMenuPanel.SetActive(true);
+        characterSelectPanel.SetActive(false);
+    }
 
     public void OpenMenu()
     {
-        panel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+        characterSelectPanel.SetActive(true);
     }
 
     public void CloseMenu()
     {
-        panel.SetActive(false);
+        characterSelectPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
     }
 
     public void SelectClass(string className)
     {
         Debug.Log("Classe sélectionnée : " + className);
+        
         CloseMenu();
     }
 }
