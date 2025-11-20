@@ -5,27 +5,32 @@ namespace Game.Gameplay.GameLogic
 {
     public class RoundStartState : BaseState<GameState.GameState>
     {
-        private List<Character> _players; 
-        public RoundStartState() : base(GameState.GameState.RoundStart)
+        private GameManager _gameManager; 
+        public RoundStartState(GameManager gm) : base(GameState.GameState.RoundStart)
         {
+            _gameManager = gm; 
         }
 
         public override void EnterState()
         {
+            _gameManager.Manager.RoundSet(_gameManager.Gamedata);
         }
 
         public override void ExitState()
         {
+            _gameManager.Manager.endRound = false; 
         }
 
         public override void UpdateState()
         {
+            _gameManager.Manager.RoundUpdate();
         }
 
         public override GameState.GameState GetNextState()
         {
+            if (_gameManager.Manager.endRound)
+                return GameState.GameState.RoundEnd;
             return GameState.GameState.RoundStart;
-            // Penser à mettre un next state ici si les conditions pour aller au prochain state sont réunie
         }
 
         public override void OnTriggerEnter() {}

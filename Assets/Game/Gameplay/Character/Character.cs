@@ -11,12 +11,24 @@ public class Character : NetworkBehaviour
     [SerializeField] private CharacterSkillController _csc; 
     [SerializeField] private Rigidbody _rigidbodyToPass; 
     
-    
     private int _orbCount =0;
+    private int _teamTag = 0; 
 
     public CharacterMovementController MovementController => _cmc;
     public CharacterAnimationController AnimationController => _cac;
     public CharacterSkillController SkillController => _csc;
+    public int TeamTag
+    {
+        get => _teamTag;
+        set => _teamTag = value;
+    }
+
+    public int OrbCount
+    {
+        get => _orbCount;
+        set => _orbCount = value;
+    }
+
 
     protected override void OnNetworkPostSpawn()
     {
@@ -30,14 +42,14 @@ public class Character : NetworkBehaviour
     
     public void Start()
     {
-        orbHoldUI.OnUpdateOrbCount(_orbCount);
+        orbHoldUI.OnUpdateOrbCount(OrbCount);
 
         _cmc.CharacterRigidbody = _rigidbodyToPass; 
     }
 
     public void OnHit(Character p, int damage)
     {
-        _orbCount -= damage; 
+        OrbCount = OrbCount - damage; 
         //TODO: Add Instantiate orb drops to 
     }
     
@@ -49,7 +61,7 @@ public class Character : NetworkBehaviour
     //Surchage de la fonction Collected au cas ou le Collected peut être utile :) 
     public void Collected(VictoryOrb c)
     {
-        _orbCount += c.Value;
-        orbHoldUI.OnUpdateOrbCount(_orbCount);
+        OrbCount = OrbCount + c.Value;
+        orbHoldUI.OnUpdateOrbCount(OrbCount);
     }
 }

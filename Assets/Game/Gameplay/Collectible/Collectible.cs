@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Collectible : MonoBehaviour
 {
     [Header("Paramètres de l'Orbe")] 
-    [SerializeField] private string collectibleName = "Orbe";
+    [SerializeField] private string collectibleName;
 
     //Timer pour définir 
     [SerializeField] private float timerCanGrabOrb = 0f;
