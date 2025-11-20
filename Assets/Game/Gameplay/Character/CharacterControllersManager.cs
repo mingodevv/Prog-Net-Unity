@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Gameplay.GameLogic;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -79,6 +80,8 @@ public class CharacterControllersManager : NetworkBehaviour
             // On lui redonne le client en Owner par sécurité.
             newCharacter.NetworkObject.ChangeOwnership(a_clientId);
         }
+        
+        GameStateMachine.Instance.players.Add(newCharacter);
     }
 
     private void HandleClientStopped(ulong a_clientId)
@@ -94,7 +97,31 @@ public class CharacterControllersManager : NetworkBehaviour
         var Character = m_Characters[a_clientId];
         // on l'enlève de la liste...
         m_Characters.Remove(a_clientId);
+
+        GameStateMachine.Instance.players.Remove(Character);
+        
         // on le supprime.
         Destroy(Character.gameObject);
+    }
+
+    public int TeamLead() // Kinda lame check ( tbf i wrote that at 1am lmfao )
+    {
+        int Team1 = new int();
+        int Team2 = new int(); 
+        
+        foreach (var character in GameStateMachine.Instance.players)// Need to change so that it doesn't interfere with m_character ... 
+        {
+            if (character.TeamTag == 1)
+                Team1+= character.OrbCount;
+            if (character.TeamTag == 2)
+                Team2+= character.OrbCount;
+        }
+
+        if (Team1 > Team2)
+            return 1;
+        if (Team2 > Team1)
+            return 2; 
+        
+        return 0; 
     }
 }
