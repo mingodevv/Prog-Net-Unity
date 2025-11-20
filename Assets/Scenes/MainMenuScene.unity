@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394552957aa3cd149be607ab18a41767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleModelPreview
-  modelPrefab: {fileID: 919132149155446097, guid: e12cb022e0812794a9c336422c50025b, type: 3}
+  modelPrefab: {fileID: 0}
 --- !u!1 &295879297
 GameObject:
   m_ObjectHideFlags: 0
