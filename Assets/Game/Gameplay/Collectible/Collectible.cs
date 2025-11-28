@@ -1,7 +1,8 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Collectible : MonoBehaviour
+public abstract class Collectible : NetworkBehaviour
 {
     [Header("Paramètres de l'Orbe")] 
     [SerializeField] private string collectibleName;
@@ -27,9 +28,18 @@ public abstract class Collectible : MonoBehaviour
     {
         if (other.CompareTag("Player") && timerCanGrabOrb <= 0f) ; 
         {
-            OnCollect(other.gameObject.GetComponent<Character>());
+            // OnCollect(other.gameObject.GetComponent<Character>());
+            if (IsServer)
+            {
+                OnCollect_Server(other.gameObject.GetComponent<Character>());
+            }
+            else if (IsClient)
+            {
+                OnCollect_Client(other.gameObject.GetComponent<Character>());
+            }
         }
     }
     
-    public abstract void OnCollect(Character a_p);
+    public abstract void OnCollect_Server(Character a_p);
+    public abstract void OnCollect_Client(Character a_p);
 }

@@ -7,26 +7,25 @@ namespace Game.Gameplay.GameLogic
     public class RoundTransitionState : BaseState<GameState.GameState>
     {
         private UIRoundTransition _uiRound;
-        private GameplayMode _data; 
-        
+        private GameplayMode _data;
+        private GameManager _gameManager;
         private List<Character> _players;
-        public RoundTransitionState(UIRoundTransition UITransition, GameplayMode data, List<Character> players) : base(GameState.GameState.RoundTransition)
+        public RoundTransitionState(UIManager uiManager, List<Character> players, GameManager gm) : base(GameState.GameState.RoundTransition)
         {
-            _uiRound = UITransition;
-            _data = data;
+            _uiRound = uiManager.RoundTransition;
+            _data = gm.Gamedata;
             _players = players;
+            _gameManager = gm;
         }
 
         public override void EnterState()
         {
-            _uiRound.gameObject.SetActive(true); 
-            _uiRound.RoundCount++;
-            _uiRound.Timer = 4;
-
+            _uiRound.UpdateUI(true);
+            _gameManager.SetTimeRemaining(4);
+            
             foreach (var character in  _players)
             {
-                character.OrbCount = 0; 
-                character.OnHit(null, 0);
+                character.ResetPlayer();
                 // mettre des spawnpoints défini pour les players. 
             }
             
@@ -34,19 +33,19 @@ namespace Game.Gameplay.GameLogic
 
         public override void ExitState()
         {
-            _uiRound.gameObject.SetActive(false); 
+            _uiRound.UpdateUI(false);
         }
 
         public override void UpdateState()
         {
-            _uiRound.UpdateTransition();
+            _uiRound.TimerSet(_gameManager.UpdateTimer());
         }
 
         public override GameState.GameState GetNextState()
         {
-            if (_uiRound.RoundCount-1 >= _data.RoundNumber)
+            if (_gameManager.Manager.RoundDone -1 >= _data.RoundNumber)
                 return GameState.GameState.GameEnd;
-            if(_uiRound.Timer <=0)
+            if(_gameManager.TimeRemaining <=0)
                 return GameState.GameState.RoundStart;
             return GameState.GameState.RoundTransition;
         }

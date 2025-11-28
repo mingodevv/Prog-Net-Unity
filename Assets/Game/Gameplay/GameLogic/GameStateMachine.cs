@@ -17,10 +17,7 @@ namespace Game.Gameplay.GameLogic
         public List<Character> players= new List<Character>();
         [SerializeField] private GameManager gm;
         [SerializeField] private CharacterControllersManager ccm;
-        [Header("UI")] 
-        [SerializeField] private UIRoundTransition uiRoundTransition; 
-        [SerializeField] private UIRoundEnd uiRoundEnd;
-        [SerializeField] private UIGameEnd uiGameEnd; 
+        [SerializeField] private UIManager uiManager; 
             
         public GameManager Gm => gm;
 
@@ -36,9 +33,9 @@ namespace Game.Gameplay.GameLogic
             // Ici j'ajoute les états pour ochestrers leurs comportement. Les comportements vont être définie dans leurs State respective
             States.Add(GameState.GameState.GameStart, new GameStartState(players, gm));
             States.Add(GameState.GameState.RoundStart, new RoundStartState(gm));
-            States.Add(GameState.GameState.RoundEnd, new RoundEndState(players, uiRoundEnd, ccm));
-            States.Add(GameState.GameState.RoundTransition, new RoundTransitionState(uiRoundTransition, gm.Gamedata, players));
-            States.Add(GameState.GameState.GameEnd, new GameEndState(uiGameEnd));
+            States.Add(GameState.GameState.RoundEnd, new RoundEndState(players, uiManager, ccm, gm));
+            States.Add(GameState.GameState.RoundTransition, new RoundTransitionState(uiManager, players, gm));
+            States.Add(GameState.GameState.GameEnd, new GameEndState(uiManager));
             
             //Ensuite j'indique quel State on est. 
             CurrentState = States[GameState.GameState.GameStart];

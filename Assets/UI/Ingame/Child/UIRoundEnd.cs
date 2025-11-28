@@ -1,9 +1,10 @@
 using TMPro;
+using UI.Ingame;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class UIRoundEnd : MonoBehaviour
+public class UIRoundEnd : UIModel
 {
     [Header("UI")] 
     [SerializeField] 
@@ -11,14 +12,6 @@ public class UIRoundEnd : MonoBehaviour
     
     [SerializeField] 
     private TextMeshProUGUI text;
-
-    private float _timer;
-    
-    public float Timer
-    {
-        get => _timer;
-        set => _timer = value;
-    }
 
     public void SetUi(int MainClientTeam, int WhoWon)
     {
@@ -41,14 +34,14 @@ public class UIRoundEnd : MonoBehaviour
             text.text = "DEFEAT"; 
         }
     }
-    
-    public void UpdateUI()
+
+    public override void UpdateUI(bool cond)
     {
-        if (_timer <= 0)
-            return; 
-        
-        _timer -= Time.deltaTime;
-        
+        gameObject.SetActive(cond);
     }
-    
+
+    public override void TimerSet(float timer)
+    {
+        throw new System.NotImplementedException();
+    }
 }
