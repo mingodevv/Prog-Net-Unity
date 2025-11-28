@@ -102,7 +102,7 @@ Material:
     - Vector1_153ea99add9f4a6ab9585431265730f5: 0.59
     - Vector1_274cf0cf93544067b87e754d0fc6f63d: 0.17
     - Vector1_37096f4f227d42b39f4c2dabc41e8fc3: 0.45
-    - Vector1_44ead74e7eb1452aaf0366f5c9dcfea3: 2.6
+    - Vector1_44ead74e7eb1452aaf0366f5c9dcfea3: 0
     - Vector1_66e1813dce49453b9d978b14470b05c7: 0.05
     - Vector1_7f4b5222fde948f59e9381ed6c3b4f3a: 1
     - Vector1_826818a5de03424e861f3b79595a0a87: 0.94
@@ -123,7 +123,7 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _Disolve: 0
-    - _DisolveStartHeight: 0.84
+    - _DisolveStartHeight: 5
     - _DisplacementStrength: 0.1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
@@ -136,7 +136,7 @@ Material:
     - _QueueControl: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Scale: 1.6
+    - _Scale: -6
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -149,7 +149,7 @@ Material:
     - Color_4344b865b07d428c9f7b0ae863f3619f: {r: 2.0202348, g: 4.167382, b: 47.587776, a: 0}
     - Color_8347162e2dad4e0998b0a62e4f170580: {r: 1, g: 1, b: 1, a: 0}
     - Color_bfc578eca04d48a9a6b782710f0c4014: {r: 0, g: 3.7268686, b: 16.94838, a: 0}
-    - Vector2_4c87d13ea4d9494aa84c3320a263248e: {r: 0.4, g: 4.3, b: 0, a: 0}
+    - Vector2_4c87d13ea4d9494aa84c3320a263248e: {r: 5, g: 0.5, b: 0, a: 0}
     - Vector2_f147b31836d64b1bb94f34508487ad11: {r: 0.25, g: 0.75, b: 0, a: 0}
     - Vector3_c2d274d99c644927bc392c5f3fdec979: {r: 0, g: 0, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
