@@ -82,6 +82,7 @@ public class CharacterControllersManager : NetworkBehaviour
         }
         
         GameStateMachine.Instance.players.Add(newCharacter);
+        newCharacter.TeamTag = 1; 
     }
 
     private void HandleClientStopped(ulong a_clientId)
@@ -104,7 +105,7 @@ public class CharacterControllersManager : NetworkBehaviour
         Destroy(Character.gameObject);
     }
 
-    public int TeamLead() // Kinda lame check ( tbf i wrote that at 1am lmfao )
+    public int TeamLead()
     {
         int Team1 = new int();
         int Team2 = new int(); 
