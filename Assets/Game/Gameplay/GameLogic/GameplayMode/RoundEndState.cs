@@ -7,34 +7,36 @@ namespace Game.Gameplay.GameLogic
     {
         private List<Character> _players;
         private UIRoundEnd _ui;
-        private CharacterControllersManager _ccm; 
-        public RoundEndState(List<Character> players ,UIRoundEnd ui, CharacterControllersManager controllersManager) : base(GameState.GameState.RoundEnd)
+        private CharacterControllersManager _ccm;
+        private GameManager _gameManager; 
+        public RoundEndState(List<Character> players ,UIManager ui, CharacterControllersManager controllersManager, GameManager gm) : base(GameState.GameState.RoundEnd)
         {
             _players = players; 
-            _ui = ui;
+            _ui = ui.RoundEnd;
             _ccm = controllersManager;
+            _gameManager = gm; 
         }
 
         public override void EnterState()
         {
-            _ui.gameObject.SetActive(true);
-            _ui.Timer = 5;
-            _ui.SetUi(_players[0].TeamTag, _ccm.TeamLead());
+            _ui.UpdateUI(true);
+            _gameManager.SetTimeRemaining(5);
+            _ui.SetUi(_gameManager.MainTeam, _ccm.TeamLead());
         }
 
         public override void ExitState()
         {
-            _ui.gameObject.SetActive(false);
+            _ui.UpdateUI(false);
         }
 
         public override void UpdateState()
         {
-            _ui.UpdateUI();
+            
         }
 
         public override GameState.GameState GetNextState()
         {
-            if (_ui.Timer <= 0)
+            if (_gameManager.TimeRemaining <= 0)
                 return GameState.GameState.RoundTransition; 
             return GameState.GameState.RoundEnd;
         }

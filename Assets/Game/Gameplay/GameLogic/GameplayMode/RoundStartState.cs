@@ -14,11 +14,14 @@ namespace Game.Gameplay.GameLogic
         public override void EnterState()
         {
             _gameManager.Manager.RoundSet(_gameManager.Gamedata);
+            
+            _gameManager.SetTimeRemaining(_gameManager.Gamedata.RoundTime);
         }
 
         public override void ExitState()
         {
             _gameManager.Manager.endRound = false; 
+            _gameManager.Manager.RoundEnd();
         }
 
         public override void UpdateState()
@@ -28,7 +31,7 @@ namespace Game.Gameplay.GameLogic
 
         public override GameState.GameState GetNextState()
         {
-            if (_gameManager.Manager.endRound)
+            if (_gameManager.TimeRemaining <=0)
                 return GameState.GameState.RoundEnd;
             return GameState.GameState.RoundStart;
         }

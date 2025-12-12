@@ -1,8 +1,9 @@
 using UnityEngine;
 using TMPro;
+using UI.Ingame;
 using UnityEngine.UI;
 
-public class UIGameEnd : MonoBehaviour
+public class UIGameEnd : UIModel
 {
     private bool _isRestarting;
 
@@ -10,5 +11,10 @@ public class UIGameEnd : MonoBehaviour
     {
         get => _isRestarting;
         set => _isRestarting = value;
+    }
+
+    public void Restart()
+    {
+        
     }
 }

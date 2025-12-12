@@ -123,8 +123,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4722733089933881518}
         m_TargetAssemblyTypeName: UIGameEnd, Assembly-CSharp
-        m_MethodName: set_IsRestarting
-        m_Mode: 6
+        m_MethodName: Restart
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -786,6 +786,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 397583473579806049}
+  - component: {fileID: 2421891143362978573}
   - component: {fileID: 4722733089933881518}
   m_Layer: 0
   m_Name: UIGameEnd
@@ -810,6 +811,31 @@ Transform:
   - {fileID: 1373630940752260333}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2421891143362978573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8335384268542997061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3429140829
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &4722733089933881518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,6 +848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f21966be7fb0d7a41bdf21421360ca08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIGameEnd
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &8686563053063517187
 GameObject:
   m_ObjectHideFlags: 0
