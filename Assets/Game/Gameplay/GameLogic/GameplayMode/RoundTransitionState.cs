@@ -38,7 +38,7 @@ namespace Game.Gameplay.GameLogic
 
         public override void UpdateState()
         {
-            _uiRound.TimerSet(_gameManager.UpdateTimer());
+            _uiRound.TimerSet(_gameManager.TimeRemaining);
         }
 
         public override GameState.GameState GetNextState()

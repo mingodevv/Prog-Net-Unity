@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Game.GameState;
+using UI.Ingame;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
@@ -20,6 +22,7 @@ namespace Game.Gameplay.GameLogic
         [SerializeField] private UIManager uiManager; 
             
         public GameManager Gm => gm;
+        public int currentTeam;
 
         void Awake()
         {
@@ -31,7 +34,7 @@ namespace Game.Gameplay.GameLogic
         
             Instance = this;
             // Ici j'ajoute les états pour ochestrers leurs comportement. Les comportements vont être définie dans leurs State respective
-            States.Add(GameState.GameState.GameStart, new GameStartState(players, gm));
+            States.Add(GameState.GameState.GameStart, new GameStartState(players, gm, uiManager));
             States.Add(GameState.GameState.RoundStart, new RoundStartState(gm));
             States.Add(GameState.GameState.RoundEnd, new RoundEndState(players, uiManager, ccm, gm));
             States.Add(GameState.GameState.RoundTransition, new RoundTransitionState(uiManager, players, gm));

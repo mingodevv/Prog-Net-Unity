@@ -956,6 +956,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1838746211}
+  - component: {fileID: 1838746212}
   m_Layer: 0
   m_Name: ==== MANAGER ====
   m_TagString: Untagged
@@ -982,6 +983,31 @@ Transform:
   - {fileID: 303775575}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1838746212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838746210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 948430613
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1842840838
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,6 +1114,50 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 162674984}
     m_Modifications:
+    - target: {fileID: 224777276118247421, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777276118247421, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777276118247421, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443470123863767706, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443470123863767706, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443470123863767706, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926925041386667669, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1755079108
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926925041386667669, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2926925041386667669, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1955371680
+      objectReference: {fileID: 0}
+    - target: {fileID: 3086676222829751797, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3775922508336534473, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3927760701729568013, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
       propertyPath: m_Name
       value: UIManager
@@ -1139,6 +1209,14 @@ PrefabInstance:
     - target: {fileID: 6264869951528743369, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 1955371680
+      objectReference: {fileID: 0}
+    - target: {fileID: 8423762544748962124, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: _roundManager
+      value: 
+      objectReference: {fileID: 1286334222152545978}
+    - target: {fileID: 8840553066793988061, guid: 3e520294c5299594d94fd38ed8b99675, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1217,6 +1295,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b2547e694fe3746b0b8da74fc6801a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!114 &1286334222152545978 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7013420299041108132, guid: 513ca837dc5e4ce42a5ac0e7e3713b49, type: 3}
+  m_PrefabInstance: {fileID: 1286334222152545976}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140ef547da72f2340be1ec00de20fc4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoundManager
 --- !u!1001 &4648024135477980361
 PrefabInstance:
   m_ObjectHideFlags: 0

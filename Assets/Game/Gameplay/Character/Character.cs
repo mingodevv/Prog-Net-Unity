@@ -1,4 +1,6 @@
 using System;
+using Game.Gameplay.GameLogic;
+using Game.GameState;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,15 +14,15 @@ public class Character : NetworkBehaviour
     [SerializeField] private Rigidbody _rigidbodyToPass; 
     
     private readonly NetworkVariable<int> m_orbCount = new();
-    private int _teamTag = 0; 
+    private NetworkVariable<int> _teamTag = new(); 
 
     public CharacterMovementController MovementController => _cmc;
     public CharacterAnimationController AnimationController => _cac;
     public CharacterSkillController SkillController => _csc;
     public int TeamTag
     {
-        get => _teamTag;
-        set => _teamTag = value;
+        get => _teamTag.Value;
+        set => _teamTag.Value = value;
     }
 
     public int OrbCount => m_orbCount.Value;
@@ -40,6 +42,7 @@ public class Character : NetworkBehaviour
 
         _cmc.CharacterRigidbody = _rigidbodyToPass; 
         m_orbCount.OnValueChanged += HandleOrbCountChangeEvent;
+        _teamTag.OnValueChanged += HandleTeamTagChangeEvent; 
     }
 
     public void OnHit(Character p, int damage)
@@ -70,4 +73,12 @@ public class Character : NetworkBehaviour
         orbHoldUI.OnUpdateOrbCount(OrbCount);
     }
     
+    private void HandleTeamTagChangeEvent(int previousValue, int newValue)
+    {
+        _teamTag.Value = newValue;
+        if (IsOwner)
+        {
+            GameStateMachine.Instance.Gm.MainTeam = newValue; 
+        }
+    }
 }

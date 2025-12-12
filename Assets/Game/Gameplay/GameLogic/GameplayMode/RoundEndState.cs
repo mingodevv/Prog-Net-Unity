@@ -21,7 +21,7 @@ namespace Game.Gameplay.GameLogic
         {
             _ui.UpdateUI(true);
             _gameManager.SetTimeRemaining(5);
-            _ui.SetUi(_players[0].TeamTag, _ccm.TeamLead());
+            _ui.SetUi(_gameManager.MainTeam, _ccm.TeamLead());
         }
 
         public override void ExitState()

@@ -18,7 +18,7 @@ public class RoundManager : NetworkBehaviour
     private Collectible _orbObject;
 
     
-    private List<Collectible> _collectiblesList; 
+    private List<Collectible> _collectiblesList = new (); 
 
     public bool endRound;
 
@@ -40,16 +40,18 @@ public class RoundManager : NetworkBehaviour
     public void RoundUpdate()
     {
         if (!IsServer)
-            return;
-        if (!_isSet)
-            return; 
-        _timeRound.Value = TimeRound - Time.deltaTime;
-        _orbTimer -= Time.deltaTime;
-        if (TimeRound <= 0)
         {
-            RoundEnd();
+            Debug.Log("Is not Server");
+            return;
+        }
+
+        if (!_isSet)
+        {
+            Debug.Log("Is not set");
             return; 
         }
+        _timeRound.Value = TimeRound - Time.deltaTime;
+        _orbTimer -= Time.deltaTime;
 
         if (_orbTimer <= 0)
         {
@@ -83,7 +85,9 @@ public class RoundManager : NetworkBehaviour
             return;
         foreach (var collectible in _collectiblesList)
         {
-            Destroy(collectible);
+            if(collectible)
+                Destroy(collectible.gameObject);
         }
+        _collectiblesList.Clear();
     }
 }

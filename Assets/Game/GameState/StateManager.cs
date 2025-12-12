@@ -37,6 +37,7 @@ public class StateManager<EState> : MonoBehaviour where EState : Enum
         CurrentState = States[stateKey]; 
         CurrentState.EnterState();
         isTransitioningState = false; 
+        Debug.Log(stateKey);
     }
     
     private void OnTriggerEnter(Collider other)

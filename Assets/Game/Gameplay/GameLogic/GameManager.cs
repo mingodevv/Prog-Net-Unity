@@ -11,22 +11,16 @@ public class GameManager : NetworkBehaviour
     [SerializeField] 
     private RoundManager roundManager; 
 
-    private float _timeRemaining;
-
+    private NetworkVariable<double> _timeOfStart = new(); 
+    private NetworkVariable<float> _totalTime = new(); 
     public RoundManager Manager => roundManager;
     public GameplayMode Gamedata => gamedata;
-    public float TimeRemaining => _timeRemaining;
+    public double TimeRemaining => _totalTime.Value - (NetworkManager.ServerTime.Time - _timeOfStart.Value );
+    public int MainTeam;
 
     public void SetTimeRemaining(float TimeSet)
     {
-        _timeRemaining = TimeSet;
-    }
-
-    public float UpdateTimer()
-    {
-        if (TimeRemaining <= 0)
-            return 0;
-        _timeRemaining = TimeRemaining - Time.deltaTime;
-        return TimeRemaining;
+        _timeOfStart.Value = NetworkManager.ServerTime.Time;
+        _totalTime.Value = TimeSet; 
     }
 }

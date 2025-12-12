@@ -13,13 +13,7 @@ public class UIGameEnd : UIModel
         set => _isRestarting = value;
     }
 
-
-    public override void UpdateUI(bool cond)
-    {
-        this.gameObject.SetActive(cond);
-    }
-
-    public override void TimerSet(float timer)
+    public void Restart()
     {
         
     }

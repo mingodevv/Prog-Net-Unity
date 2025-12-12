@@ -1,7 +1,9 @@
+using System;
 using TMPro;
 using UI.Ingame;
+using Unity.Collections;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class UIRoundEnd : UIModel
@@ -12,7 +14,23 @@ public class UIRoundEnd : UIModel
     
     [SerializeField] 
     private TextMeshProUGUI text;
+    
+    private NetworkVariable<FixedString64Bytes> _roundEndString = new();
+    
+    public NetworkVariable<FixedString64Bytes> RoundEndString
+    {
+        get => _roundEndString;
+        set => _roundEndString = value;
+    }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        RoundEndString.OnValueChanged += HandleRoundEndTextChange;
+    }
+
+
+    
     public void SetUi(int MainClientTeam, int WhoWon)
     {
         if (MainClientTeam == WhoWon)
@@ -33,15 +51,18 @@ public class UIRoundEnd : UIModel
         {
             text.text = "DEFEAT"; 
         }
+
+        RoundEndString.Value = text.text; 
     }
 
-    public override void UpdateUI(bool cond)
+    public void HandleRoundEndTextChange(FixedString64Bytes previousValue, FixedString64Bytes newValue)
     {
-        gameObject.SetActive(cond);
-    }
-
-    public override void TimerSet(float timer)
-    {
-        throw new System.NotImplementedException();
+        if (IsServer)
+            return;
+        if(newValue == "VICTORY")
+            panel.color = Color.chartreuse * new Vector4(1, 1, 1,0.2f);
+        else 
+            panel.color = Color.brown * new Vector4(1, 1, 1,0.2f);
+        text.text = newValue.ToString();
     }
 }
