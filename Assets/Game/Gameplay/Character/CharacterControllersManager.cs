@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class CharacterControllersManager : NetworkBehaviour
 {
-    [SerializeField]
+    [SerializeField] 
     private Character m_CharacterPrefab;
     
     [SerializeField] 
