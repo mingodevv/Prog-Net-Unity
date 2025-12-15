@@ -1,7 +1,8 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     [Header("Game Settings")] 
     [SerializeField]
@@ -10,11 +11,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] 
     private RoundManager roundManager; 
 
-    private int _collectiblesCollected;
-    private float _timeRemaining;
-    private bool _gameEnded;
-
+    private NetworkVariable<double> _timeOfStart = new(); 
+    private NetworkVariable<float> _totalTime = new(); 
     public RoundManager Manager => roundManager;
-
     public GameplayMode Gamedata => gamedata;
+    public double TimeRemaining => _totalTime.Value - (NetworkManager.ServerTime.Time - _timeOfStart.Value );
+    public int MainTeam;
+
+    public void SetTimeRemaining(float TimeSet)
+    {
+        _timeOfStart.Value = NetworkManager.ServerTime.Time;
+        _totalTime.Value = TimeSet; 
+    }
 }

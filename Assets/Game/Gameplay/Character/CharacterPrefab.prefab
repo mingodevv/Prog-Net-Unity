@@ -610,7 +610,7 @@ MonoBehaviour:
   billboardType: 0
   _camera: {fileID: 0}
   lockX: 0
-  lockY: 0
+  lockY: 1
   lockZ: 0
 --- !u!114 &175244506907249026
 MonoBehaviour:

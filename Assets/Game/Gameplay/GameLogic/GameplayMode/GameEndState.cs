@@ -7,20 +7,20 @@ namespace Game.Gameplay.GameLogic
     public class GameEndState : BaseState<GameState.GameState>
     {
         private UIGameEnd _gameEndUI; 
-        public GameEndState(UIGameEnd gameEndUi) : base(GameState.GameState.GameEnd)
+        public GameEndState(UIManager uiManager) : base(GameState.GameState.GameEnd)
         {
-            _gameEndUI = gameEndUi;
+            _gameEndUI= uiManager.GameEnd;
         }
 
         public override void EnterState()
         {
-            _gameEndUI.gameObject.SetActive(true);
+            _gameEndUI.UpdateUI(true);
         }
 
         public override void ExitState()
         {
             _gameEndUI.IsRestarting = false; 
-            _gameEndUI.gameObject.SetActive(false);
+            _gameEndUI.UpdateUI(false);
         }
 
         public override void UpdateState()

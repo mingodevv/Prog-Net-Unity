@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameplayMode
   _gameModeName: FirstGamemode
   _numberPlayerRequired: 2
-  _orbSpawnInterval: 2
-  _roundTime: 20
+  _orbSpawnInterval: 0.5
+  _roundTime: 5
   _roundNumber: 3
   _orbSpawnLocation: {x: 0, y: 0, z: 0}
