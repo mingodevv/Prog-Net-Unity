@@ -9,9 +9,15 @@ public class CharacterControllersManager : NetworkBehaviour
 {
     [SerializeField]
     private Character m_CharacterPrefab;
+    
+    [SerializeField] 
+    private GameObject SpawnPointTeam1; 
+    
+    [SerializeField] 
+    private GameObject SpawnPointTeam2;
 
     private Dictionary<ulong, Character> m_Characters = new Dictionary<ulong, Character>();
-    
+    private bool teamdivide; 
     public override void OnDestroy()
     {
         NetworkManager.OnClientConnectedCallback -= HandleClientStarted;
@@ -60,8 +66,20 @@ public class CharacterControllersManager : NetworkBehaviour
         else
         // si il n'existe pas encore...
         {
+
+            if (teamdivide)
+            {
+                newCharacter = Instantiate(m_CharacterPrefab, new Vector3(Random.Range(-5f, 5f)+SpawnPointTeam1.gameObject.transform.position.x, 0f, Random.Range(-5f, 5f)+SpawnPointTeam1.gameObject.transform.position.z), Quaternion.identity);
+                newCharacter.TeamTag = 1; 
+            }
+            else
+            {
+                newCharacter = Instantiate(m_CharacterPrefab, new Vector3(Random.Range(-5f, 5f)+SpawnPointTeam2.gameObject.transform.position.x, 0f, Random.Range(-5f, 5f)+SpawnPointTeam2.gameObject.transform.position.z), Quaternion.identity);
+                newCharacter.TeamTag = 2; 
+            }
+
+            teamdivide = !teamdivide; 
             // On le crée...
-            newCharacter = Instantiate(m_CharacterPrefab, new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-5f, 5f)), Quaternion.identity);
             // et on l'enregistre.
             m_Characters.Add(a_clientId, newCharacter);
         }
@@ -82,7 +100,6 @@ public class CharacterControllersManager : NetworkBehaviour
         }
         
         GameStateMachine.Instance.players.Add(newCharacter);
-        newCharacter.TeamTag = 1; 
     }
 
     private void HandleClientStopped(ulong a_clientId)

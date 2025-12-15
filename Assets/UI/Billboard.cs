@@ -27,10 +27,10 @@ public class Billboard : MonoBehaviour {
         //TODO: Remove Camera.allCameras[0] && make sure that the other player
         switch (billboardType) {
             case BillboardType.LookAtCamera:
-                transform.LookAt(Camera.current.transform.position, Vector3.up);
+                transform.LookAt(Camera.allCameras[0].transform.position, Vector3.up);
                 break;
             case BillboardType.CameraForward:
-                transform.forward = Camera.current.transform.forward;
+                transform.forward = Camera.allCameras[0].transform.forward;
                 break;
             default:
                 break;

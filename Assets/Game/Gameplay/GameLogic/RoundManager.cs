@@ -16,6 +16,11 @@ public class RoundManager : NetworkBehaviour
 
     [SerializeField]
     private Collectible _orbObject;
+    
+    [SerializeField] 
+    private List<GameObject> _orbSetLocations;
+
+    private int indexOrb=0;
 
     
     private List<Collectible> _collectiblesList = new (); 
@@ -55,8 +60,13 @@ public class RoundManager : NetworkBehaviour
 
         if (_orbTimer <= 0)
         {
-            SpawnOrb(_orbSpawnSet);
-            _orbTimer = _orbIntervalSpawn; 
+            SpawnOrb(_orbSetLocations[indexOrb].gameObject.transform.position);
+            _orbTimer = _orbIntervalSpawn;
+            indexOrb++;
+            if (indexOrb+1> _orbSetLocations.Count)
+            {
+                indexOrb = 0; 
+            }
         } 
     }
 
@@ -73,7 +83,7 @@ public class RoundManager : NetworkBehaviour
     {
         if (!IsServer)
             return;
-        Collectible newCollectible; // Déclaration de variable au cas où ça sera utile de l'avoir plus tard.
+        Collectible newCollectible; 
         newCollectible = Instantiate(_orbObject, new Vector3(Random.Range(-1f, 1f) + location.x, 1f+ location.y, Random.Range(-1f, 1f) + location.z), Quaternion.identity);
         newCollectible.NetworkObject.Spawn();
         _collectiblesList.Add(newCollectible);

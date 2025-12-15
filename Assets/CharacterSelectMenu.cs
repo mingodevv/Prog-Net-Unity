@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class CharacterSelectMenu : MonoBehaviour
 {
-    [SerializeField] 
-    private HeroChoice sm; 
     [Header("Panels")]
     public GameObject mainMenuPanel;
     public GameObject characterSelectPanel;
@@ -44,7 +42,7 @@ public class CharacterSelectMenu : MonoBehaviour
         ApplyClass(currentClass);
 
         CloseMenu();
-        sm.SelectedClass = currentClass;
+        ClassManager.Instance.SelectedClass = currentClass;
     }
 
     void ApplyClass(string className)
