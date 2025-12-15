@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,46 +10,39 @@ public class TankClass : HeroCore
 
     private HashSet<DummyPlayer> hitTargets = new HashSet<DummyPlayer>();
 
-    protected override void Start()
+    public override void Skill_Attack()
     {
-        base.Start();
-
-        if (attackCollider != null)
-            attackCollider.enabled = false;
+        if (!canAttack) return;
+        StartCoroutine(AttackRoutine());
     }
 
-    protected override void HandleActions()
+    public override void Skill_Crouch()
     {
-        bool shielding = Mouse.current.rightButton.isPressed;
-        anim.SetBool("Shield?", shielding);
-      
-        if (shielding) return;
-        
-        if (Mouse.current.leftButton.wasPressedThisFrame && canAttack)
-        {
-            Attack();
-        }
-        
-        if (Keyboard.current.qKey.wasPressedThisFrame)
-            anim.SetTrigger("PowerUp?");
+
     }
 
-    protected override void Attack()
+    public override void Skill_PowerUp()
     {
+        anim.SetTrigger("PowerUp?");
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        canAttack = false;
         anim.SetTrigger("Attack?");
-        StartCoroutine(AttackCooldownRoutine());
+        yield return new WaitForSeconds(attackCooldown);
 
         if (attackCollider != null)
             StartCoroutine(EnableAttackColliderRoutine());
+
+        canAttack = true;
     }
 
     private IEnumerator EnableAttackColliderRoutine()
     {
         hitTargets.Clear();
         attackCollider.enabled = true;
-        
         yield return new WaitForSeconds(0.5f);
-
         attackCollider.enabled = false;
     }
 
@@ -59,14 +51,13 @@ public class TankClass : HeroCore
         if (attackCollider == null || !attackCollider.enabled) return;
 
         DummyPlayer target = other.GetComponent<DummyPlayer>();
-
         if (target != null && !hitTargets.Contains(target))
         {
             target.TakeDamage(attackDamage);
             hitTargets.Add(target);
         }
     }
-    
+
     public override void TakeDamage(int dmg)
     {
         if (anim.GetBool("Shield?"))

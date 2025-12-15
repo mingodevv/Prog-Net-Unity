@@ -4,21 +4,22 @@ using Game.GameState;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Character : NetworkBehaviour
+public abstract class Character : NetworkBehaviour
 {
-    [Header("Références")]
+    [Header("UI (optionnel)")]
     [SerializeField] private OrbHoldUI orbHoldUI;
-    [SerializeField] private CharacterMovementController _cmc;
-    [SerializeField] private CharacterAnimationController _cac;
-    [SerializeField] private CharacterSkillController _csc; 
-    [SerializeField] private Rigidbody _rigidbodyToPass; 
     
-    private readonly NetworkVariable<int> m_orbCount = new();
-    private NetworkVariable<int> _teamTag = new(); 
+    protected CharacterMovementController _cmc;
+    protected CharacterAnimationController _cac;
+    protected CharacterSkillController _csc;
 
+    private readonly NetworkVariable<int> m_orbCount = new();
+    private NetworkVariable<int> _teamTag = new();
+    
     public CharacterMovementController MovementController => _cmc;
     public CharacterAnimationController AnimationController => _cac;
     public CharacterSkillController SkillController => _csc;
+
     public int TeamTag
     {
         get => _teamTag.Value;
@@ -26,29 +27,36 @@ public class Character : NetworkBehaviour
     }
 
     public int OrbCount => m_orbCount.Value;
+
     protected override void OnNetworkPostSpawn()
     {
         base.OnNetworkPostSpawn();
 
-        if (IsOwner)
+        if (IsOwner && InputController.Instance != null)
         {
             InputController.Instance.SetCharacter(this);
         }
     }
-    
-    public void Start()
-    {
-        orbHoldUI.OnUpdateOrbCount(OrbCount);
 
-        _cmc.CharacterRigidbody = _rigidbodyToPass; 
+    protected virtual void Awake()
+    {
+        _cmc = GetComponent<CharacterMovementController>();
+        _cac = GetComponent<CharacterAnimationController>();
+        _csc = GetComponent<CharacterSkillController>();
+    }
+
+    protected virtual void Start()
+    {
+        if (orbHoldUI != null)
+            orbHoldUI.OnUpdateOrbCount(OrbCount);
+
         m_orbCount.OnValueChanged += HandleOrbCountChangeEvent;
-        _teamTag.OnValueChanged += HandleTeamTagChangeEvent; 
+        _teamTag.OnValueChanged += HandleTeamTagChangeEvent;
     }
 
     public void OnHit(Character p, int damage)
     {
-        m_orbCount.Value = OrbCount - damage; 
-        //TODO: Add Instantiate orb drops to 
+        m_orbCount.Value = OrbCount - damage;
     }
 
     public void ResetPlayer()
@@ -56,29 +64,28 @@ public class Character : NetworkBehaviour
         m_orbCount.Value = 0;
         OnHit(null, 0);
     }
-    
-    public void Collected(Collectible c)
-    {
-        // Surcharge 
-    }
-    
-    //Surchage de la fonction Collected au cas ou le Collected peut être utile :) 
+
+    public void Collected(Collectible c) { }
+
     public void Collected(VictoryOrb c)
     {
         m_orbCount.Value = OrbCount + c.Value;
     }
-    
+
     private void HandleOrbCountChangeEvent(int previousValue, int newValue)
     {
-        orbHoldUI.OnUpdateOrbCount(OrbCount);
+        if (orbHoldUI != null)
+            orbHoldUI.OnUpdateOrbCount(newValue);
     }
-    
+
     private void HandleTeamTagChangeEvent(int previousValue, int newValue)
     {
-        _teamTag.Value = newValue;
-        if (IsOwner)
+        if (IsOwner && GameStateMachine.Instance != null)
         {
-            GameStateMachine.Instance.Gm.MainTeam = newValue; 
+            GameStateMachine.Instance.Gm.MainTeam = newValue;
         }
     }
+
+    public abstract void Skill_Attack();
+    public abstract void TakeDamage(int dmg);
 }

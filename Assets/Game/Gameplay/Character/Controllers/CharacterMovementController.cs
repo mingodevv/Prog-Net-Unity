@@ -1,17 +1,14 @@
 using UnityEngine;
 using System.Collections;
-using Unity.Netcode;
-using UnityEngine.Serialization;
 
 public class CharacterMovementController : MonoBehaviour
 {
-    
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float sprintMultiplier = 1.5f;
     [SerializeField] private float jumpForce = 3f;
     [SerializeField] private float rollForce = 4.5f;
-    
+
     private Rigidbody _rigidbody;
     private CharacterAnimationController animController;
 
@@ -32,13 +29,26 @@ public class CharacterMovementController : MonoBehaviour
         set => animController = value;
     }
 
+    private void Awake()
+    {
+        if (_rigidbody == null)
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+            if (_rigidbody == null)
+                Debug.LogError($"{name} : Rigidbody not assigned in CharacterMovementController!");
+        }
+    }
+
     void Update()
     {
+        if (_rigidbody == null) return;
+
         float currentSpeed = moveSpeed;
         if (_isSprinting)
             currentSpeed *= sprintMultiplier;
-        
+
         Vector3 move = _moveDirection * currentSpeed;
+        
         Vector3 velocity = _rigidbody.linearVelocity;
         velocity.x = move.x;
         velocity.z = move.z;
@@ -50,25 +60,17 @@ public class CharacterMovementController : MonoBehaviour
             _rigidbody.rotation = Quaternion.Slerp(_rigidbody.rotation, targetRotation, 10f * Time.deltaTime);
         }
         
-        float moveAmount = _moveDirection.magnitude;
         if (AnimController != null)
         {
-            float animSpeed ;
-            if (moveAmount > 0.1f)
-                animSpeed = _isSprinting ? 1f : 0.5f;
-            else
-                animSpeed = 0f;
-
+            float animSpeed = _moveDirection.magnitude > 0.1f ? (_isSprinting ? 1f : 0.5f) : 0f;
             AnimController.SetSpeed(animSpeed);
         }
-
     }
-    
 
     public void SetMoveDirection(Vector2 input)
     {
-        Vector3 forward = gameObject.transform.forward;
-        Vector3 right = gameObject.transform.right;
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
         forward.y = 0f;
         right.y = 0f;
         _moveDirection = (right * input.x + forward * input.y).normalized;
@@ -76,7 +78,7 @@ public class CharacterMovementController : MonoBehaviour
 
     public void Jump()
     {
-        if (_isGrounded && !_isRolling)
+        if (_isGrounded && !_isRolling && _rigidbody != null)
         {
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             _isGrounded = false;
@@ -96,7 +98,9 @@ public class CharacterMovementController : MonoBehaviour
         if (AnimController != null)
             AnimController.SetRolling();
 
-        _rigidbody.AddForce(_moveDirection * rollForce, ForceMode.Impulse);
+        if (_rigidbody != null)
+            _rigidbody.AddForce(_moveDirection * rollForce, ForceMode.Impulse);
+
         yield return new WaitForSeconds(0.6f);
         _isRolling = false;
     }
@@ -108,6 +112,8 @@ public class CharacterMovementController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (_rigidbody == null) return;
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             _isGrounded = true;
     }

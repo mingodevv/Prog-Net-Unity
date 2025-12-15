@@ -4,8 +4,15 @@ using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
-    #region Singleton
     public static InputController Instance { get; private set; }
+
+    [SerializeField] private CinemachineCamera _camera;
+
+    private Character _character;
+    private AssassinClass _assassin;
+
+    private InputSystem_Actions m_actions;
+    private InputAction _attackAction;
 
     private void Awake()
     {
@@ -14,115 +21,60 @@ public class InputController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
         Instance = this;
     }
-    #endregion
-    
-    public void SetCharacter(Character aCharacter)
-    {
-        _character = aCharacter;
-
-        _camera.Target.TrackingTarget = aCharacter.transform; 
-    }
-    
-    [SerializeField] private CinemachineCamera _camera; 
-    
-    private Character _character;
-
-    private InputSystem_Actions m_actions;
-    
-    private InputAction _moveAction;
-    private InputAction _jumpAction;
-    private InputAction _crouchAction;
-    private InputAction _rollAction;
-    private InputAction _sprintAction;
-    private InputAction _skill1Action;
-    private InputAction _skill2Action;
-    private InputAction _skill3Action;
 
     void Start()
     {
         m_actions = new InputSystem_Actions();
+    }
+
+    private void OnEnable()
+    {
+        if (m_actions == null) return;
+
         m_actions.Enable();
 
-        // _moveAction = _playerInput.actions["Move"];
-        // _jumpAction = _playerInput.actions["Jump"];
-        // _crouchAction = _playerInput.actions["Crouch"];
-        // _rollAction = _playerInput.actions["Roll"];
-        // _sprintAction = _playerInput.actions["Sprint"]; 
-        // _skill1Action = _playerInput.actions["Skill1"];
-        // _skill2Action = _playerInput.actions["Skill2"];
-        // _skill3Action = _playerInput.actions["Skill3"];
-    }
+        // === SKILLS ===
+        m_actions.Player.Skill1.performed += _ => _assassin?.Skill_Attack();
+        m_actions.Player.Skill2.performed += _ => _assassin?.Skill_Crouch();
+        m_actions.Player.Skill3.performed += _ => _assassin?.Skill_PowerUp();
 
-    void OnEnable()
-    {
-		return; 
-        _jumpAction.performed += OnJump;
-        _rollAction.performed += OnRoll;
-        _sprintAction.performed += OnSprint;
-        _sprintAction.canceled += OnSprintCanceled;
+        // === SPRINT ===
+        m_actions.Player.Sprint.performed += _ =>
+            _character?.MovementController.SetSprinting(true);
+
+        m_actions.Player.Sprint.canceled += _ =>
+            _character?.MovementController.SetSprinting(false);
         
-        _skill1Action.performed += OnSkill1;
-        _skill2Action.performed += OnSkill2;
-        _skill3Action.performed += OnSkill3;
+        _attackAction.performed += Attack_Click;
+        
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-		return; 
-        _jumpAction.performed -= OnJump;
-        _rollAction.performed -= OnRoll;
-        _sprintAction.performed -= OnSprint;
-        _sprintAction.canceled -= OnSprintCanceled;
+        if (m_actions == null) return;
 
-        _skill1Action.performed -= OnSkill1;
-        _skill2Action.performed -= OnSkill2;
-        _skill3Action.performed -= OnSkill3;
+        m_actions.Disable();
     }
 
     void Update()
     {
-        if (!_character)
-            return;
-        
         Vector2 moveInput = m_actions.Player.Move.ReadValue<Vector2>();
         _character.MovementController.SetMoveDirection(moveInput);
     }
 
-    private void OnJump(InputAction.CallbackContext context)
+    public void SetCharacter(Character aCharacter)
     {
-        _character.MovementController.Jump();
+        _character = aCharacter;
+        _assassin = aCharacter.GetComponent<AssassinClass>();
+
+        _camera.Target.TrackingTarget = aCharacter.transform;
     }
 
-    private void OnRoll(InputAction.CallbackContext context)
+    public void Attack_Click(InputAction.CallbackContext callbackContext)
     {
-        _character.MovementController.Roll();
+        _character.Skill_Attack();
     }
-
-    private void OnSprint(InputAction.CallbackContext context)
-    {
-        _character.MovementController.SetSprinting(true);
-    }
-
-    private void OnSprintCanceled(InputAction.CallbackContext context)
-    {
-        _character.MovementController.SetSprinting(false);
-    }
-
-    private void OnSkill1(InputAction.CallbackContext context)
-    {
-        // CharacterSkillController.Instance?.ActivateSkill("Skill1");
-    }
-
-    private void OnSkill2(InputAction.CallbackContext context)
-    {
-        // CharacterSkillController.Instance?.ActivateSkill("Skill2");
-    }
-
-    private void OnSkill3(InputAction.CallbackContext context)
-    {
-        // CharacterSkillController.Instance?.ActivateSkill("Skill3");
-    }
+    
 }
