@@ -81,4 +81,7 @@ public class Character : NetworkBehaviour
             GameStateMachine.Instance.Gm.MainTeam = newValue; 
         }
     }
+    
+    
+    
 }
